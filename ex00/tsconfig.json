@@ -1,0 +1,15 @@
+{
+  "compilerOptions": {
+    "target": "es5", // or "es6" depending on the environment you need
+    "module": "es6",
+    "lib": ["ES6", "DOM"],
+    "strict": true, // Enables all strict type-checking options
+    "esModuleInterop": true, // For importing modules
+    "skipLibCheck": true,
+    "outDir": "./dist", // Output directory for compiled JS
+    "rootDir": "./src", // Root directory for TypeScript files
+    "resolveJsonModule": true,
+    "moduleResolution": "node"
+  },
+  "include": ["src/**/*.ts"]
+}
