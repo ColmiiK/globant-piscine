@@ -1,27 +1,36 @@
-const imageElement = document.getElementById("image") as HTMLImageElement;
+const imageContainer = document.getElementById(
+  "image-container",
+) as HTMLImageElement;
 const loadButton = document.getElementById("load-button") as HTMLButtonElement;
+const queryInput = document.getElementById("query") as HTMLInputElement;
 
 async function loadImage(): Promise<void> {
+  const query = queryInput.value;
   try {
-    const response = await fetch("http://localhost:5000/api/random-image");
+    const response = await fetch(
+      `http://localhost:5000/api/random-image?query=${encodeURIComponent(query)}`,
+    );
     const data = await response.json();
     console.log("API response:", data);
-    const imageUrl: string = data.imageUrl;
+    const imageUrls: string[] = data.imageUrls;
 
-    // Check if the image URL exists
-    if (!imageUrl) {
-      throw new Error("Image URL is missing in the response");
-    }
+    imageContainer.innerHTML = "";
 
-    // Set the image source to the URL fetched from your backend
-    imageElement.src = imageUrl;
+    imageUrls.forEach((url) => {
+      const imageElement = document.createElement("img");
+      imageElement.src = url;
+      imageContainer.appendChild(imageElement);
+    });
   } catch (error) {
     console.error("Error fetching image:", error);
   }
 }
 
-// Load a new image when the page loads
 window.onload = loadImage;
 
-// Load a new image when the button is clicked
 loadButton.addEventListener("click", loadImage);
+queryInput.addEventListener("keydown", (event: KeyboardEvent) => {
+  if (event.key === "Enter") {
+    loadImage(); // Trigger the image load function
+  }
+});

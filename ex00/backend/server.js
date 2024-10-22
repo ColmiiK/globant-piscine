@@ -13,23 +13,25 @@ app.use(
 );
 // Retrieve Unsplash API key from environment variables
 const UNSPLASH_API_KEY = process.env.UNSPLASH_API_KEY;
-
+// https://api.unsplash.com/search/photos?query=${query}&client_id=${apiKey}
 app.get("/api/random-image", async (req, res) => {
+  const query = req.query.query || "random";
+  const imageCount = 4;
   try {
-    const response = await axios.get("https://api.unsplash.com/photos/random", {
-      headers: {
-        Authorization: `Client-ID ${UNSPLASH_API_KEY}`,
+    const response = await axios.get("https://api.unsplash.com/search/photos", {
+      params: {
+        query,
+        client_id: UNSPLASH_API_KEY,
+        per_page: imageCount,
       },
     });
 
-    // Log the response data for debugging
-
-    const image = response.data; // Get the first image
-    if (image) {
-      // Send the image URL back to the frontend
-      res.json({ imageUrl: image.urls.regular });
+    const images = response.data.results;
+    if (images && images.length > 0) {
+      const imageUrls = images.map((image) => image.urls.regular);
+      res.json({ imageUrls });
     } else {
-      res.status(500).json({ error: "No image found" });
+      res.status(500).json({ error: "No images found" });
     }
   } catch (error) {
     console.error("Error fetching image:", error);
