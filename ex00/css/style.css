@@ -1,20 +1,100 @@
+html,
+body {
+  background-color: black; /* Background color */
+  height: 100%; /* Full height */
+  margin: 0; /* No margin */
+  box-sizing: border-box; /* Border-box sizing */
+  font-family: Arial, sans-serif; /* Font family */
+  color: white; /* Text color */
+  display: flex; /* Enable flexbox layout */
+  justify-content: center; /* Center horizontally */
+  align-items: center; /* Center vertically */
+}
+
+.container {
+  text-align: center; /* Center text inside the container */
+  padding: 10px; /* Optional padding for the container */
+  width: 100%; /* Allow the container to take full width */
+}
+
 #image-container {
   display: flex;
-  justify-content: center;
-  align-items: center;
+  flex-wrap: wrap; /* Allow images to wrap */
+  justify-content: center; /* Center images horizontally */
+  gap: 10px; /* Space between images */
   margin-top: 20px;
+  width: 100%;
 }
 
 #image-container img {
-  max-width: 100%;
-  height: auto;
-  border-radius: 8px;
+  flex: 1 1 calc(25% - 10px); /* Allow four images per row, considering the gap */
+  max-width: calc(25% - 10px); /* Ensure images don't exceed 25% width */
+  height: auto; /* Maintain aspect ratio */
+  object-fit: cover; /* Cover the entire image area */
+  border-radius: 8px; /* Rounded corners for images */
 }
 
 #load-button {
   display: block;
   margin: 20px auto;
-  padding: 10px 20px;
-  font-size: 16px;
+  padding: 12px 24px; /* Slightly bigger padding for better touch targets */
+  font-size: 18px; /* Increase font size for better readability */
+  font-weight: bold; /* Make the text bold */
   cursor: pointer;
+
+  /* Button appearance */
+  background: linear-gradient(135deg, #4caf50, #81c784); /* Green gradient */
+  color: white; /* White text */
+  border: none; /* Remove default borders */
+  border-radius: 8px; /* Slightly rounded corners */
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* Soft shadow */
+  transition:
+    background 0.3s ease,
+    box-shadow 0.3s ease,
+    transform 0.3s ease; /* Smooth transition */
+}
+
+#load-button:hover {
+  /* Hover effects */
+  background: linear-gradient(
+    135deg,
+    #388e3c,
+    #66bb6a
+  ); /* Darker green gradient */
+  box-shadow: 0px 6px 10px rgba(0, 0, 0, 0.2); /* Stronger shadow on hover */
+  transform: translateY(-3px); /* Slight lift on hover */
+}
+
+#load-button:active {
+  /* Active state */
+  background: linear-gradient(
+    135deg,
+    #2e7d32,
+    #4caf50
+  ); /* Slightly darker on active */
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1); /* Reduce shadow when clicked */
+  transform: translateY(0); /* Reset the lift */
+}
+
+input[type="text"] {
+  padding: 10px; /* Inner space for better usability */
+  font-size: 16px; /* Font size for the text */
+  border: 2px solid #4caf50; /* Border color and width */
+  border-radius: 5px; /* Rounded corners */
+  outline: none; /* Remove the default outline */
+  transition:
+    border-color 0.3s,
+    box-shadow 0.3s; /* Smooth transition for hover/focus effects */
+}
+
+/* Change border color on focus */
+input[type="text"]:focus {
+  border-color: #388e3c; /* Darker border color on focus */
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5); /* Add a shadow effect */
+}
+
+/* Placeholder styling */
+input[type="text"]::placeholder {
+  color: #aaa; /* Placeholder text color */
+  font-style: italic; /* Make placeholder text italic */
 }

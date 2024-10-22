@@ -15,23 +15,40 @@ app.use(
 const UNSPLASH_API_KEY = process.env.UNSPLASH_API_KEY;
 // https://api.unsplash.com/search/photos?query=${query}&client_id=${apiKey}
 app.get("/api/random-image", async (req, res) => {
-  const query = req.query.query || "random";
+  const query = req.query.query;
   const imageCount = 4;
-  try {
-    const response = await axios.get("https://api.unsplash.com/search/photos", {
-      params: {
-        query,
-        client_id: UNSPLASH_API_KEY,
-        per_page: imageCount,
-      },
-    });
 
-    const images = response.data.results;
-    if (images && images.length > 0) {
-      const imageUrls = images.map((image) => image.urls.regular);
-      res.json({ imageUrls });
+  try {
+    let response;
+    if (query) {
+      response = await axios.get("https://api.unsplash.com/search/photos", {
+        params: {
+          query,
+          client_id: UNSPLASH_API_KEY,
+          per_page: imageCount,
+        },
+      });
+      const images = response.data.results;
+      if (images && images.length > 0) {
+        const imageUrls = images.map((image) => image.urls.regular);
+        res.json({ imageUrls });
+      } else {
+        res.status(500).json({ error: "No images found" });
+      }
     } else {
-      res.status(500).json({ error: "No images found" });
+      response = await axios.get("https://api.unsplash.com/photos/random", {
+        params: {
+          count: imageCount,
+          client_id: UNSPLASH_API_KEY,
+        },
+      });
+      const images = response.data;
+      if (images && images.length > 0) {
+        const imageUrls = images.map((image) => image.urls.regular);
+        res.json({ imageUrls });
+      } else {
+        res.status(500).json({ error: "No random images found" });
+      }
     }
   } catch (error) {
     console.error("Error fetching image:", error);
