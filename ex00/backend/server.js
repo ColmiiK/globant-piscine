@@ -16,7 +16,7 @@ app.use(
 // Consume the Unsplash API to get photos
 app.get("/api/image", async (req, res) => {
   const query = req.query.query;
-  const imageCount = 4;
+  const imageCount = 99;
   try {
     let response;
     let images;
@@ -40,7 +40,7 @@ app.get("/api/image", async (req, res) => {
       images = response.data;
     }
     if (images && images.length > 0) {
-      const imageUrls = images.map((image) => image.urls.regular);
+      const imageUrls = images.map((image) => image.urls.small);
       res.json({ imageUrls });
     } else {
       res.status(500).json({ error: "No images found" });
